@@ -19,3 +19,59 @@ body {
   gap: 5rem;
   list-style: none;
 }
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+input, select, button {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.user-table {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.user-table th, .user-table td {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.user-table img {
+  display: block;
+  margin: 0 auto;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+}

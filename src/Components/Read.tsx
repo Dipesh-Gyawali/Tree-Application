@@ -1,47 +1,41 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { User } from "../types";
 
-// const initialData = [
-//   {
-//     id: 1,
-//     name: "John Doe",
-//     email: "john@example.com",
-//     phone: "123-456-7890",
-//     dob: "1990-01-01",
-//   },
-//   // Add more initial data as needed
-// ];
+interface ReadProps {
+  users: User[];
+  onDeleteUser: (userId: string) => void;
+  onEditUser: (user: User) => void;
+}
 
-export const Read = ({ userData }) => {
-  const [users, setUsers] = useState([]);
-  const [editUser, setEditUser] = useState(null);
+export const Read: React.FC<ReadProps> = ({
+  users,
+  onDeleteUser,
+  onEditUser,
+}) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 5;
+  const totalPages = Math.ceil(users.length / usersPerPage);
 
-  useEffect(() => {
-    const savedData = localStorage.getItem("userData");
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setUsers([parsedData]); // Since you have a single user object, put it in an array
-    }
-  }, [userData]);
-
-  const handleEdit = (user) => {
-    setEditUser(user);
-    // Implement functionality to show an edit form/modal
-    console.log("Editing user:", user);
+  const handleEdit = (user: User) => {
+    onEditUser(user);
   };
 
-  const handleView = (user) => {
-    // Implement functionality to show detailed view of user
-    console.log("Viewing user:", user);
+  const handleDelete = (userId: string) => {
+    onDeleteUser(userId);
   };
 
-  const handleDelete = (userId) => {
-    setUsers(users.filter((user) => user.id !== userId));
-    console.log("Deleted user with ID:", userId);
+  const handlePageChange = (direction: number) => {
+    setCurrentPage((prevPage) => prevPage + direction);
   };
+
+  const currentUsers = users.slice(
+    (currentPage - 1) * usersPerPage,
+    currentPage * usersPerPage
+  );
 
   return (
     <div className="container">
-      <h2 className="title">User Table</h2>
+      <h2>User Table</h2>
       <table border="1" className="user-table">
         <thead>
           <tr>
@@ -49,43 +43,65 @@ export const Read = ({ userData }) => {
             <th>Email</th>
             <th>Phone</th>
             <th>Date of Birth</th>
+            <th>City</th>
+            <th>District</th>
+            <th>Province</th>
+            <th>Country</th>
+            <th>Profile Picture</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
-            <tr key={index}>
-              <td>{user.userData.name}</td>
-              <td>{user.userData.email}</td>
-              <td>{user.userData.phone}</td>
-              <td>{user.userData.dob}</td>
-              <td>{user.userData.city}</td>
-              <td>{user.userData.district}</td>
-              <td>{user.userData.province}</td>
-              <td>{user.userData.country}</td>
+          {currentUsers.map((user) => (
+            <tr key={user.id}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.phone}</td>
+              <td>{user.dob}</td>
+              <td>{user.city}</td>
+              <td>{user.district}</td>
+              <td>{user.province}</td>
+              <td>{user.country}</td>
               <td>
-                {user.file && (
+                {user.file ? (
                   <img
                     src={user.file}
                     alt="Profile"
                     style={{ width: "50px", height: "50px" }}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        "/path/to/fallback/image.png";
+                    }}
                   />
+                ) : (
+                  <span>No image</span>
                 )}
               </td>
               <td>
-                <button onClick={() => handleView(user)}>View</button>
                 <button onClick={() => handleEdit(user)}>Edit</button>
-                <button
-                  className="delete"
-                  onClick={() => handleDelete(user.id)}
-                >
-                  Delete
-                </button>
+                <button onClick={() => handleDelete(user.id)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <div className="pagination">
+        <button
+          onClick={() => handlePageChange(-1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
