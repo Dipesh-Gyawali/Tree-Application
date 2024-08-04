@@ -1,79 +1,105 @@
-/* Container styling */
 .container {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f4f4f4;
+  margin: 2rem auto;
+  padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  margin-bottom: 3rem !important;
 }
 
-/* Title styling */
-.title {
+h2 {
   text-align: center;
+  margin-bottom: 1.5rem;
   color: #333;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
 }
 
-/* Form styling */
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  gap: 1.5rem;
 }
 
-/* Form group styling */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
-.form-group label {
+label {
   font-weight: bold;
+  margin-bottom: 0.5rem;
   color: #555;
 }
 
-.form-group input,
-.form-group select {
-  padding: 10px;
-  border-radius: 4px;
+input,
+select {
+  padding: 0.75rem;
   border: 1px solid #ddd;
-}
-
-/* Responsive Design */
-@media (min-width: 600px) {
-  .form {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .form-group {
-    flex-direction: row;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .form-group label {
-    flex: 0 0 150px;
-  }
-
-  .form-group input,
-  .form-group select {
-    flex: 1;
-  }
-}
-
-/* Button styling */
-.submit-btn {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 12px;
   border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
-.submit-btn:hover {
-  background-color: #0056b3;
+input:focus,
+select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.25);
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+input[type="file"] {
+  border: none;
+  padding: 0;
+}
+
+input[type="file"]::file-selector-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f8f9fa;
+  color: #007bff;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: #e2e6ea;
+  color: #0056b3;
+}
+
+/* Animation for the form */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  animation: fadeIn 0.5s ease-out;
 }

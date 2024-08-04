@@ -1,0 +1,58 @@
+.navbar {
+  background: #1e90ff; /* Bright blue background */
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease;
+  margin-bottom: 2rem;
+  /* height: 2.5rem; */
+}
+
+.navbar:hover {
+  background: #4682b4; /* Slightly darker blue on hover */
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: #fff;
+  padding: 0.75rem 1rem;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+  color: #dcdcdc; /* Light gray color on hover */
+  text-decoration: none;
+}
+
+.form-control {
+  border-radius: 4px;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.container-fluid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar {
+  animation: slideIn 0.5s ease-out;
+}

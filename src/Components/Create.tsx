@@ -1,11 +1,15 @@
+// Create.tsx
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { User } from "../types";
+import "./Create.css";
+import { useNavigate } from "react-router-dom";
 
 interface CreateProps {
   onAddUser: (user: User) => void;
 }
 
 export const Create: React.FC<CreateProps> = ({ onAddUser }) => {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState<Omit<User, "id" | "file">>({
     name: "",
     email: "",
@@ -76,6 +80,10 @@ export const Create: React.FC<CreateProps> = ({ onAddUser }) => {
       errors.phone = "Phone number must be at least 7 digits";
       isValid = false;
     }
+    if (!file) {
+      errors.file = "Profile picture is required";
+      isValid = false;
+    }
     setErrors(errors);
     return isValid;
   };
@@ -96,7 +104,6 @@ export const Create: React.FC<CreateProps> = ({ onAddUser }) => {
     if (file) {
       formData.append("file", file);
 
-      // Read file as Base64
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64File = reader.result as string;
@@ -106,10 +113,8 @@ export const Create: React.FC<CreateProps> = ({ onAddUser }) => {
           file: base64File,
         };
 
-        // Simulate a file upload
         onAddUser(newUser);
 
-        // Save to local storage
         const dataToSave = {
           userData,
           file: base64File,
@@ -117,7 +122,6 @@ export const Create: React.FC<CreateProps> = ({ onAddUser }) => {
         localStorage.setItem("userData", JSON.stringify(dataToSave));
         console.log("Data saved to local storage:", dataToSave);
 
-        // Reset form
         setUserData({
           name: "",
           email: "",
@@ -138,10 +142,8 @@ export const Create: React.FC<CreateProps> = ({ onAddUser }) => {
         file: null,
       };
 
-      // Simulate a file upload
       onAddUser(newUser);
 
-      // Save to local storage
       const dataToSave = {
         userData,
         file: null,
@@ -149,7 +151,6 @@ export const Create: React.FC<CreateProps> = ({ onAddUser }) => {
       localStorage.setItem("userData", JSON.stringify(dataToSave));
       console.log("Data saved to local storage:", dataToSave);
 
-      // Reset form
       setUserData({
         name: "",
         email: "",
@@ -162,6 +163,7 @@ export const Create: React.FC<CreateProps> = ({ onAddUser }) => {
       });
       setFile(null);
     }
+    navigate("/read");
   };
 
   return (
