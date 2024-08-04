@@ -25,6 +25,7 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
   });
   const [file, setFile] = useState<File | null>(null);
   const [initialImageUrl, setInitialImageUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (userToEdit) {
@@ -52,6 +53,7 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
     if (selectedFile && selectedFile.type === "image/png") {
       setFile(selectedFile);
+      setPreviewUrl(URL.createObjectURL(selectedFile));
     } else {
       alert("Only PNG files are allowed");
     }
@@ -62,7 +64,7 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
     const editedUser: User = {
       ...userData,
       id: id!,
-      file: file ? URL.createObjectURL(file) : userToEdit?.file,
+      file: file ? previewUrl! : userToEdit?.file,
     };
 
     onEditUser(editedUser);
@@ -158,14 +160,24 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
         <div className="form-group">
           <label>Profile Picture:</label>
           <input type="file" accept="image/png" onChange={handleFileChange} />
-          {initialImageUrl && (
+          {previewUrl ? (
             <div>
               <img
-                src={initialImageUrl}
+                src={previewUrl}
                 alt="Profile"
                 style={{ width: "100px", height: "100px" }}
               />
             </div>
+          ) : (
+            initialImageUrl && (
+              <div>
+                <img
+                  src={initialImageUrl}
+                  alt="Profile"
+                  style={{ width: "100px", height: "100px" }}
+                />
+              </div>
+            )
           )}
         </div>
         <button type="submit">Update</button>
