@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { User } from "../types";
 import Toast from "./Toast";
+import { useNavigate } from "react-router-dom";
 
 interface ReadProps {
   users: User[];
@@ -15,6 +16,7 @@ export const Read: React.FC<ReadProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: "asc" | "desc";
@@ -48,6 +50,11 @@ export const Read: React.FC<ReadProps> = ({
 
   const handleEdit = (user: User) => {
     onEditUser(user);
+    const editItem = users.find((item) => {
+      return item.id === user.id;
+    });
+    console.log(editItem, "editItem");
+    navigate(`/edit/${editItem.id}`);
   };
 
   const handleDelete = (userId: string) => {

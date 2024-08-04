@@ -1,6 +1,6 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { useParams } from 'react-router-dom';
-import { User } from '../types';
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { User } from "../types";
 
 interface UpdateProps {
   users: User[];
@@ -9,19 +9,22 @@ interface UpdateProps {
 
 export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
   const { id } = useParams<{ id: string }>();
-  const userToEdit = users.find(user => user.id === id);
+  const navigate = useNavigate();
 
-  const [userData, setUserData] = useState<Omit<User, 'id' | 'file'>>({
-    name: '',
-    email: '',
-    phone: '',
-    dob: '',
-    city: '',
-    district: '',
-    province: '1',
-    country: 'Nepal',
+  const userToEdit = users.find((user) => user.id === id);
+
+  const [userData, setUserData] = useState<Omit<User, "id" | "file">>({
+    name: "",
+    email: "",
+    phone: "",
+    dob: "",
+    city: "",
+    district: "",
+    province: "1",
+    country: "Nepal",
   });
   const [file, setFile] = useState<File | null>(null);
+  const [initialImageUrl, setInitialImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (userToEdit) {
@@ -35,19 +38,22 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
         province: userToEdit.province,
         country: userToEdit.country,
       });
+      setInitialImageUrl(userToEdit.file);
     }
   }, [userToEdit]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
-    if (selectedFile && selectedFile.type === 'image/png') {
+    if (selectedFile && selectedFile.type === "image/png") {
       setFile(selectedFile);
     } else {
-      alert('Only PNG files are allowed');
+      alert("Only PNG files are allowed");
     }
   };
 
@@ -60,6 +66,7 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
     };
 
     onEditUser(editedUser);
+    navigate("/read");
   };
 
   return (
@@ -68,32 +75,66 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Name:</label>
-          <input type="text" name="name" value={userData.name} onChange={handleChange} />
+          <input
+            type="text"
+            name="name"
+            value={userData.name}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Email:</label>
-          <input type="email" name="email" value={userData.email} onChange={handleChange} />
+          <input
+            type="email"
+            name="email"
+            value={userData.email}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Phone:</label>
-          <input type="tel" name="phone" value={userData.phone} onChange={handleChange} />
+          <input
+            type="tel"
+            name="phone"
+            value={userData.phone}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Date of Birth:</label>
-          <input type="date" name="dob" value={userData.dob} onChange={handleChange} />
+          <input
+            type="date"
+            name="dob"
+            value={userData.dob}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>City:</label>
-          <input type="text" name="city" value={userData.city} onChange={handleChange} />
+          <input
+            type="text"
+            name="city"
+            value={userData.city}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>District:</label>
-          <input type="text" name="district" value={userData.district} onChange={handleChange} />
+          <input
+            type="text"
+            name="district"
+            value={userData.district}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Province:</label>
-          <select name="province" value={userData.province} onChange={handleChange}>
-            {['1', '2', '3', '4', '5', '6', '7'].map(province => (
+          <select
+            name="province"
+            value={userData.province}
+            onChange={handleChange}
+          >
+            {["1", "2", "3", "4", "5", "6", "7"].map((province) => (
               <option key={province} value={province}>
                 {province}
               </option>
@@ -102,8 +143,12 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
         </div>
         <div className="form-group">
           <label>Country:</label>
-          <select name="country" value={userData.country} onChange={handleChange}>
-            {['Nepal', 'India', 'China'].map(country => (
+          <select
+            name="country"
+            value={userData.country}
+            onChange={handleChange}
+          >
+            {["Nepal", "India", "China"].map((country) => (
               <option key={country} value={country}>
                 {country}
               </option>
@@ -113,6 +158,15 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
         <div className="form-group">
           <label>Profile Picture:</label>
           <input type="file" accept="image/png" onChange={handleFileChange} />
+          {initialImageUrl && (
+            <div>
+              <img
+                src={initialImageUrl}
+                alt="Profile"
+                style={{ width: "100px", height: "100px" }}
+              />
+            </div>
+          )}
         </div>
         <button type="submit">Update</button>
       </form>
