@@ -3,12 +3,15 @@ import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { User } from "../types";
 import "./Create.css";
 import { useNavigate } from "react-router-dom";
+import { useTitle } from "./useTitle";
 
 interface CreateProps {
   onAddUser: (user: User) => void;
 }
 
 export const Create: React.FC<CreateProps> = ({ onAddUser }) => {
+  useTitle("Create");
+
   const navigate = useNavigate();
   const [userData, setUserData] = useState<Omit<User, "id" | "file">>({
     name: "",

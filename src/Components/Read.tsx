@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { User } from "../types";
 import Toast from "./Toast";
 import { useNavigate } from "react-router-dom";
+import { useTitle } from "./useTitle";
 
 interface ReadProps {
   users: User[];
@@ -22,6 +23,9 @@ export const Read: React.FC<ReadProps> = ({
     direction: "asc" | "desc";
   } | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null); // State for toast message
+
+  useTitle("Read");
+
   const usersPerPage = 5;
 
   // Filter and sort logic

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../types";
+import { useTitle } from "./useTitle";
 
 interface UpdateProps {
   users: User[];
@@ -42,6 +43,8 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
       setInitialImageUrl(userToEdit.file);
     }
   }, [userToEdit]);
+
+  useTitle("Edit");
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
