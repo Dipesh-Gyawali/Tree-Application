@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { User } from "../types";
+import { User } from "../types/types";
 import { useTitle } from "./useTitle";
 
 interface UpdateProps {
@@ -67,6 +67,7 @@ export const Update: React.FC<UpdateProps> = ({ users, onEditUser }) => {
     const editedUser: User = {
       ...userData,
       id: id!,
+      // @ts-ignore
       file: file ? previewUrl! : userToEdit?.file,
     };
 

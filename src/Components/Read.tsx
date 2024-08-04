@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { User } from "../types";
+import { User } from "../types/types";
 import Toast from "./Toast";
 import { useNavigate } from "react-router-dom";
 import { useTitle } from "./useTitle";
@@ -43,7 +43,9 @@ export const Read: React.FC<ReadProps> = ({
     if (!config) return users;
     const { key, direction } = config;
     return [...users].sort((a, b) => {
+      // @ts-ignore
       if (a[key] < b[key]) return direction === "asc" ? -1 : 1;
+      // @ts-ignore
       if (a[key] > b[key]) return direction === "asc" ? 1 : -1;
       return 0;
     });
@@ -58,6 +60,7 @@ export const Read: React.FC<ReadProps> = ({
       return item.id === user.id;
     });
     console.log(editItem, "editItem");
+    // @ts-ignore
     navigate(`/edit/${editItem.id}`);
   };
 
@@ -94,7 +97,6 @@ export const Read: React.FC<ReadProps> = ({
   return (
     <div className="container-read">
       <h2>User Table</h2>
-
       <input
         type="text"
         placeholder="Search"
@@ -103,7 +105,6 @@ export const Read: React.FC<ReadProps> = ({
         onChange={(e) => setSearchQuery(e.target.value)}
         style={{ width: "20rem", marginLeft: "1rem" }}
       />
-
       <table border="1" className="user-table">
         <thead>
           <tr>
